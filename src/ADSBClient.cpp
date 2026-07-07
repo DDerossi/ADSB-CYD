@@ -291,7 +291,7 @@ while (true) {
   Serial.print(" seen_pos=");
   Serial.println(aircraft.seenPosSeconds);
 
-  if (aircraftPassesFilters(aircraft)) {
+  if (aircraftPassesFilters(aircraft, settings)) {
     if (store.add(aircraft)) {
       acceptedCount++;
     } else {

@@ -8,7 +8,7 @@ struct AppSettings {
 
   int radiusNm = 20;
 
-  int minAltitudeFt = 0;
+  int minAltitudeFt = 500;
   int maxAltitudeFt = 60000;
   int minSpeedKt = 0;
 
