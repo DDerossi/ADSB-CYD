@@ -107,8 +107,36 @@ void Application::handleTouch() {
   Serial.print(" y=");
   Serial.println(point.y);
 
-  // Touch navigation will be added next.
-  // For now, do not redraw the screen.
+  // Prevent accidental double taps
+  static unsigned long lastTouchMs = 0;
+
+  if (millis() - lastTouchMs < 500) {
+    return;
+  }
+
+  lastTouchMs = millis();
+
+
+  // Detail screen tap = return to list
+  if (screen == ScreenState::AircraftDetail) {
+    showAircraftList();
+    return;
+  }
+
+
+  // Aircraft list selection
+  if (screen == ScreenState::AircraftList) {
+
+    if (point.y < 30) {
+      return;
+    }
+
+    int row = (point.y - 34) / 22;
+
+    if (row >= 0 && row < aircraftStore.count()) {
+      showAircraftDetail(row);
+    }
+  }
 }
 
 void Application::refreshAircraft() {
