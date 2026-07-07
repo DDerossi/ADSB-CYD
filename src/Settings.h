@@ -8,11 +8,11 @@ struct AppSettings {
 
   int radiusNm = 20;
 
-  int minAltitudeFt = 500;
+  int minAltitudeFt = 0;
   int maxAltitudeFt = 60000;
-  int minSpeedKt = 80;
+  int minSpeedKt = 0;
 
-  int maxSeenPosSeconds = 30;
+  int maxSeenPosSeconds = 300;
   unsigned long refreshIntervalMs = 30000;
 };
 

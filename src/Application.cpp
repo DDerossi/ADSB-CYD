@@ -50,15 +50,42 @@ if (wifiOk) {
   bool adsbOk = adsb.testConnection(settings.get());
 
   if (adsbOk) {
-    display.showStatus("ADSB API OK", "HTTP 200");
+
+  display.showStatus(
+    "Downloading aircraft",
+    "Please wait..."
+  );
+
+  bool fetchOk = adsb.fetchAircraft(
+    settings.get(),
+    aircraftStore
+  );
+
+  if (fetchOk) {
+    Serial.print("Aircraft stored: ");
+    Serial.println(aircraftStore.count());
+
+    display.showAircraftList(
+      aircraftStore.list()
+    );
   } else {
-    display.showStatus("ADSB API failed", "Check serial log");
+    display.showStatus(
+      "Aircraft fetch failed",
+      "Check serial"
+    );
   }
+
+} else {
+  display.showStatus(
+    "ADSB API failed",
+    "Check serial log"
+  );
+}
 
   delay(2000);
 }
 
-display.showBootScreen();
+// Leave the last meaningful screen visible.
 
   state = AppState::Running;
 }
@@ -88,11 +115,6 @@ void Application::handleTouch() {
   Serial.print(" y=");
   Serial.println(point.y);
 
-  display.showStatus(
-    "Touch detected",
-    "X: " + String(point.x) + "  Y: " + String(point.y)
-  );
-
-  delay(500);
-  display.showBootScreen();
+  // Touch navigation will be added next.
+  // For now, do not redraw the screen.
 }

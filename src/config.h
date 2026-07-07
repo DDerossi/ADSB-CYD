@@ -37,9 +37,9 @@
 // ----------------------
 // Aircraft filters
 // ----------------------
-#define FILTER_MIN_ALTITUDE_FT 500
+#define FILTER_MIN_ALTITUDE_FT 0
 #define FILTER_MAX_ALTITUDE_FT 60000
-#define FILTER_MIN_SPEED_KT 80
+#define FILTER_MIN_SPEED_KT 0
 
 // Ignore aircraft with stale position data.
 // adsb.lol "seen_pos" is typically seconds since last position update.

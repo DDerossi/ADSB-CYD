@@ -6,6 +6,7 @@
 #include "Settings.h"
 #include "WiFiService.h"
 #include "ADSBClient.h"
+#include "AircraftStore.h"
 
 enum class AppState {
   Boot,
@@ -21,6 +22,7 @@ private:
   SettingsManager settings;
   WiFiService wifi;
   ADSBClient adsb;
+  AircraftStore aircraftStore;
   
   Display display;
   TouchInput touchInput;
