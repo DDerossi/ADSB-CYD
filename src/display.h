@@ -10,6 +10,7 @@ public:
   void showBootScreen();
   void showStatus(const String& line1, const String& line2 = "");
   void showAircraftList(const AircraftList& aircraftList);
+  void showAircraftDetail(const Aircraft& aircraft);
 
 private:
   TFT_eSPI tft = TFT_eSPI();

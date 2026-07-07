@@ -185,9 +185,5 @@ void Application::showAircraftDetail(int index) {
   String callsign = aircraft.flight[0] ? String(aircraft.flight) : String(aircraft.hex);
   callsign.trim();
 
-  display.showStatus(
-    callsign,
-    "Alt " + String(aircraft.altitudeFt) +
-    " ft  " + String(aircraft.groundSpeedKt) + " kt"
-  );
+display.showAircraftDetail(aircraft);
 }

@@ -97,3 +97,68 @@ void Display::drawAircraftRow(int row, const Aircraft& aircraft) {
   tft.setTextColor(TFT_CYAN, row % 2 == 0 ? TFT_DARKGREY : TFT_BLACK);
   tft.drawRightString(String(aircraft.trackDeg) + "°", 312, y, 2);
 }
+
+void Display::showAircraftDetail(const Aircraft& aircraft) {
+  tft.fillScreen(TFT_BLACK);
+
+  String callsign = aircraft.flight[0] ? String(aircraft.flight) : String(aircraft.hex);
+  callsign.trim();
+
+  drawHeader(callsign);
+
+  tft.setTextFont(2);
+
+  int y = 40;
+
+  tft.setTextColor(TFT_CYAN, TFT_BLACK);
+  tft.drawString("Aircraft", 10, y);
+  tft.setTextColor(TFT_WHITE, TFT_BLACK);
+  tft.drawString(aircraft.type[0] ? aircraft.type : "Unknown", 120, y);
+
+  y += 24;
+
+  tft.setTextColor(TFT_CYAN, TFT_BLACK);
+  tft.drawString("Reg", 10, y);
+  tft.setTextColor(TFT_WHITE, TFT_BLACK);
+  tft.drawString(aircraft.registration[0] ? aircraft.registration : "Unknown", 120, y);
+
+  y += 24;
+
+  tft.setTextColor(TFT_CYAN, TFT_BLACK);
+  tft.drawString("Altitude", 10, y);
+  tft.setTextColor(TFT_GREEN, TFT_BLACK);
+  tft.drawString(String(aircraft.altitudeFt) + " ft", 120, y);
+
+  y += 24;
+
+  tft.setTextColor(TFT_CYAN, TFT_BLACK);
+  tft.drawString("Speed", 10, y);
+  tft.setTextColor(TFT_ORANGE, TFT_BLACK);
+  tft.drawString(String(aircraft.groundSpeedKt) + " kt", 120, y);
+
+  y += 24;
+
+  tft.setTextColor(TFT_CYAN, TFT_BLACK);
+  tft.drawString("Heading", 10, y);
+  tft.setTextColor(TFT_WHITE, TFT_BLACK);
+  tft.drawString(String(aircraft.trackDeg) + " deg", 120, y);
+
+  y += 24;
+
+  tft.setTextColor(TFT_CYAN, TFT_BLACK);
+  tft.drawString("Squawk", 10, y);
+  tft.setTextColor(TFT_WHITE, TFT_BLACK);
+  tft.drawString(aircraft.squawk[0] ? aircraft.squawk : "----", 120, y);
+
+  y += 24;
+
+  tft.setTextColor(TFT_CYAN, TFT_BLACK);
+  tft.drawString("Seen", 10, y);
+  tft.setTextColor(TFT_WHITE, TFT_BLACK);
+  tft.drawString(String(aircraft.seenPosSeconds, 1) + " sec", 120, y);
+
+  y += 24;
+
+  tft.setTextColor(TFT_DARKGREY, TFT_BLACK);
+  tft.drawString("Tap anywhere to return", 10, 220);
+}
