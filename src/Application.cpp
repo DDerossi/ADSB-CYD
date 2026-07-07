@@ -95,9 +95,14 @@ void Application::update() {
     case AppState::Boot:
       break;
 
-    case AppState::Running:
-      handleTouch();
-      break;
+case AppState::Running:
+  handleTouch();
+
+  if (millis() - lastAircraftRefreshMs >= settings.get().refreshIntervalMs) {
+    refreshAircraft();
+  }
+
+  break;
   }
 
   delay(20);
@@ -117,4 +122,31 @@ void Application::handleTouch() {
 
   // Touch navigation will be added next.
   // For now, do not redraw the screen.
+}
+
+void Application::refreshAircraft() {
+  if (!wifi.isConnected()) {
+    display.showStatus("WiFi disconnected", "Reconnect needed");
+    return;
+  }
+
+  display.showStatus("Refreshing aircraft", "adsb.lol");
+
+  bool fetchOk = adsb.fetchAircraft(
+    settings.get(),
+    aircraftStore
+  );
+
+  if (fetchOk) {
+    Serial.print("Aircraft stored: ");
+    Serial.println(aircraftStore.count());
+
+    display.showAircraftList(
+      aircraftStore.list()
+    );
+
+    lastAircraftRefreshMs = millis();
+  } else {
+    display.showStatus("Aircraft refresh failed", "Check serial");
+  }
 }

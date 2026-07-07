@@ -27,7 +27,10 @@ private:
   Display display;
   TouchInput touchInput;
 
-  AppState state = AppState::Boot;
+AppState state = AppState::Boot;
 
-  void handleTouch();
+unsigned long lastAircraftRefreshMs = 0;
+
+void handleTouch();
+void refreshAircraft();
 };
