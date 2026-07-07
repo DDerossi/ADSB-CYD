@@ -1,0 +1,99 @@
+#include "Display.h"
+#include "Config.h"
+
+void Display::begin() {
+  pinMode(TFT_BL, OUTPUT);
+  digitalWrite(TFT_BL, HIGH);
+
+  tft.init();
+
+  // Landscape mode for the CYD.
+  tft.setRotation(1);
+
+  tft.fillScreen(TFT_BLACK);
+  tft.setTextDatum(TL_DATUM);
+}
+
+void Display::showBootScreen() {
+  tft.fillScreen(TFT_BLACK);
+
+  tft.setTextColor(TFT_CYAN, TFT_BLACK);
+  tft.setTextFont(4);
+  tft.drawString("ADSB CYD", 20, 30);
+
+  tft.setTextColor(TFT_WHITE, TFT_BLACK);
+  tft.setTextFont(2);
+  tft.drawString("Aviation Dashboard", 20, 70);
+
+  tft.setTextColor(TFT_DARKGREY, TFT_BLACK);
+  tft.drawString("Initializing...", 20, 110);
+}
+
+void Display::showStatus(const String& line1, const String& line2) {
+  tft.fillScreen(TFT_BLACK);
+
+  tft.setTextColor(TFT_CYAN, TFT_BLACK);
+  tft.setTextFont(2);
+  tft.drawString("ADSB CYD", 10, 10);
+
+  tft.setTextColor(TFT_WHITE, TFT_BLACK);
+  tft.drawString(line1, 10, 50);
+
+  if (line2.length() > 0) {
+    tft.setTextColor(TFT_DARKGREY, TFT_BLACK);
+    tft.drawString(line2, 10, 75);
+  }
+}
+
+void Display::showAircraftList(const AircraftList& aircraftList) {
+  tft.fillScreen(TFT_BLACK);
+  drawHeader("Aircraft Nearby");
+
+  tft.setTextFont(2);
+
+  if (aircraftList.count == 0) {
+    tft.setTextColor(TFT_YELLOW, TFT_BLACK);
+    tft.drawString("No aircraft match filters", 10, 60);
+    return;
+  }
+
+  int visibleRows = min(aircraftList.count, 9);
+
+  for (int i = 0; i < visibleRows; i++) {
+    drawAircraftRow(i, aircraftList.items[i]);
+  }
+}
+
+void Display::drawHeader(const String& title) {
+  tft.fillRect(0, 0, 320, 28, TFT_NAVY);
+
+  tft.setTextColor(TFT_WHITE, TFT_NAVY);
+  tft.setTextFont(2);
+  tft.drawString(title, 8, 7);
+
+  tft.setTextColor(TFT_CYAN, TFT_NAVY);
+  tft.drawString("20nm", 270, 7);
+}
+
+void Display::drawAircraftRow(int row, const Aircraft& aircraft) {
+  int y = 34 + row * 22;
+
+  if (row % 2 == 0) {
+    tft.fillRect(0, y - 2, 320, 22, TFT_DARKGREY);
+  }
+
+  String callsign = aircraft.flight[0] ? String(aircraft.flight) : String(aircraft.hex);
+  callsign.trim();
+
+  tft.setTextColor(TFT_WHITE, row % 2 == 0 ? TFT_DARKGREY : TFT_BLACK);
+  tft.drawString(callsign, 6, y);
+
+  tft.setTextColor(TFT_GREEN, row % 2 == 0 ? TFT_DARKGREY : TFT_BLACK);
+  tft.drawRightString(String(aircraft.altitudeFt), 155, y, 2);
+
+  tft.setTextColor(TFT_ORANGE, row % 2 == 0 ? TFT_DARKGREY : TFT_BLACK);
+  tft.drawRightString(String(aircraft.groundSpeedKt) + "kt", 230, y, 2);
+
+  tft.setTextColor(TFT_CYAN, row % 2 == 0 ? TFT_DARKGREY : TFT_BLACK);
+  tft.drawRightString(String(aircraft.trackDeg) + "°", 312, y, 2);
+}
