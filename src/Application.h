@@ -13,6 +13,12 @@ enum class AppState {
   Running
 };
 
+enum class ScreenState {
+  AircraftList,
+  AircraftDetail,
+  Settings
+};
+
 class Application {
 public:
   void begin();
@@ -28,9 +34,15 @@ private:
   TouchInput touchInput;
 
 AppState state = AppState::Boot;
+ScreenState screen = ScreenState::AircraftList;
+
+int selectedAircraftIndex = -1;
 
 unsigned long lastAircraftRefreshMs = 0;
 
 void handleTouch();
 void refreshAircraft();
+
+void showAircraftDetail(int index);
+void showAircraftList();
 };

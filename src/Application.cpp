@@ -42,50 +42,37 @@ void Application::begin() {
     display.showStatus("WiFi failed", "Check SSID/password");
   }
 
- delay(1000);
+  delay(1000);
 
-if (wifiOk) {
-  display.showStatus("Calling ADSB API...", "adsb.lol");
+  if (wifiOk) {
+    display.showStatus("Calling ADSB API...", "adsb.lol");
 
-  bool adsbOk = adsb.testConnection(settings.get());
+    bool adsbOk = adsb.testConnection(settings.get());
 
-  if (adsbOk) {
+    if (adsbOk) {
+      display.showStatus("Downloading aircraft", "Please wait...");
 
-  display.showStatus(
-    "Downloading aircraft",
-    "Please wait..."
-  );
+      bool fetchOk = adsb.fetchAircraft(
+        settings.get(),
+        aircraftStore
+      );
 
-  bool fetchOk = adsb.fetchAircraft(
-    settings.get(),
-    aircraftStore
-  );
+      if (fetchOk) {
+        Serial.print("Aircraft stored: ");
+        Serial.println(aircraftStore.count());
 
-  if (fetchOk) {
-    Serial.print("Aircraft stored: ");
-    Serial.println(aircraftStore.count());
+        showAircraftList();
+        lastAircraftRefreshMs = millis();
+      } else {
+        display.showStatus("Aircraft fetch failed", "Check serial");
+      }
 
-    display.showAircraftList(
-      aircraftStore.list()
-    );
-  } else {
-    display.showStatus(
-      "Aircraft fetch failed",
-      "Check serial"
-    );
+    } else {
+      display.showStatus("ADSB API failed", "Check serial log");
+    }
+
+    delay(2000);
   }
-
-} else {
-  display.showStatus(
-    "ADSB API failed",
-    "Check serial log"
-  );
-}
-
-  delay(2000);
-}
-
-// Leave the last meaningful screen visible.
 
   state = AppState::Running;
 }
@@ -95,14 +82,14 @@ void Application::update() {
     case AppState::Boot:
       break;
 
-case AppState::Running:
-  handleTouch();
+    case AppState::Running:
+      handleTouch();
 
-  if (millis() - lastAircraftRefreshMs >= settings.get().refreshIntervalMs) {
-    refreshAircraft();
-  }
+      if (millis() - lastAircraftRefreshMs >= settings.get().refreshIntervalMs) {
+        refreshAircraft();
+      }
 
-  break;
+      break;
   }
 
   delay(20);
@@ -141,12 +128,38 @@ void Application::refreshAircraft() {
     Serial.print("Aircraft stored: ");
     Serial.println(aircraftStore.count());
 
-    display.showAircraftList(
-      aircraftStore.list()
-    );
-
+    showAircraftList();
     lastAircraftRefreshMs = millis();
   } else {
     display.showStatus("Aircraft refresh failed", "Check serial");
   }
+}
+
+void Application::showAircraftList() {
+  screen = ScreenState::AircraftList;
+  selectedAircraftIndex = -1;
+
+  display.showAircraftList(
+    aircraftStore.list()
+  );
+}
+
+void Application::showAircraftDetail(int index) {
+  if (index < 0 || index >= aircraftStore.count()) {
+    return;
+  }
+
+  screen = ScreenState::AircraftDetail;
+  selectedAircraftIndex = index;
+
+  const Aircraft& aircraft = aircraftStore.list().items[index];
+
+  String callsign = aircraft.flight[0] ? String(aircraft.flight) : String(aircraft.hex);
+  callsign.trim();
+
+  display.showStatus(
+    callsign,
+    "Alt " + String(aircraft.altitudeFt) +
+    " ft  " + String(aircraft.groundSpeedKt) + " kt"
+  );
 }
