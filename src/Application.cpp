@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "Config.h"
 
 void Application::begin() {
   Serial.begin(115200);
@@ -6,6 +7,7 @@ void Application::begin() {
 
   Serial.println();
   Serial.println("ADSB-CYD starting...");
+
   settings.begin();
 
   Serial.println("Settings initialized");
@@ -25,6 +27,24 @@ void Application::begin() {
 
   Serial.println("Display initialized");
   Serial.println("Touch initialized");
+
+  display.showStatus("Connecting WiFi...", WIFI_SSID);
+
+  bool wifiOk = wifi.begin(WIFI_SSID, WIFI_PASSWORD);
+
+  if (wifiOk) {
+    Serial.print("WiFi connected. IP: ");
+    Serial.println(wifi.localIp());
+
+    display.showStatus("WiFi connected", wifi.localIp());
+  } else {
+    Serial.println("WiFi failed");
+    display.showStatus("WiFi failed", "Check SSID/password");
+  }
+
+  delay(1500);
+
+  display.showBootScreen();
 
   state = AppState::Running;
 }
