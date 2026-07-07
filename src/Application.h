@@ -3,6 +3,7 @@
 #include <Arduino.h>
 #include "Display.h"
 #include "TouchInput.h"
+#include "Settings.h"
 
 enum class AppState {
   Boot,
@@ -15,6 +16,8 @@ public:
   void update();
 
 private:
+  SettingsManager settings;
+  
   Display display;
   TouchInput touchInput;
 

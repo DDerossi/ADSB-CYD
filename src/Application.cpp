@@ -6,6 +6,17 @@ void Application::begin() {
 
   Serial.println();
   Serial.println("ADSB-CYD starting...");
+  settings.begin();
+
+  Serial.println("Settings initialized");
+  Serial.print("Home Lat: ");
+  Serial.println(settings.get().homeLat, 6);
+
+  Serial.print("Home Lon: ");
+  Serial.println(settings.get().homeLon, 6);
+
+  Serial.print("Radius NM: ");
+  Serial.println(settings.get().radiusNm);
 
   display.begin();
   display.showBootScreen();
