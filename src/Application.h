@@ -5,6 +5,7 @@
 #include "TouchInput.h"
 #include "Settings.h"
 #include "WiFiService.h"
+#include "ADSBClient.h"
 
 enum class AppState {
   Boot,
@@ -19,6 +20,7 @@ public:
 private:
   SettingsManager settings;
   WiFiService wifi;
+  ADSBClient adsb;
   
   Display display;
   TouchInput touchInput;

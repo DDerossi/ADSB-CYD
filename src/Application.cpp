@@ -42,9 +42,23 @@ void Application::begin() {
     display.showStatus("WiFi failed", "Check SSID/password");
   }
 
-  delay(1500);
+ delay(1000);
 
-  display.showBootScreen();
+if (wifiOk) {
+  display.showStatus("Calling ADSB API...", "adsb.lol");
+
+  bool adsbOk = adsb.testConnection(settings.get());
+
+  if (adsbOk) {
+    display.showStatus("ADSB API OK", "HTTP 200");
+  } else {
+    display.showStatus("ADSB API failed", "Check serial log");
+  }
+
+  delay(2000);
+}
+
+display.showBootScreen();
 
   state = AppState::Running;
 }
