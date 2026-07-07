@@ -95,7 +95,11 @@ void Display::drawAircraftRow(int row, const Aircraft& aircraft) {
   tft.drawRightString(String(aircraft.groundSpeedKt) + "kt", 230, y, 2);
 
   tft.setTextColor(TFT_CYAN, row % 2 == 0 ? TFT_DARKGREY : TFT_BLACK);
+  if (aircraft.distanceNm >= 0) {
+  tft.drawRightString(String(aircraft.distanceNm, 1) + "nm", 312, y, 2);
+} else {
   tft.drawRightString(String(aircraft.trackDeg) + "°", 312, y, 2);
+}
 }
 
 void Display::showAircraftDetail(const Aircraft& aircraft) {
@@ -105,7 +109,7 @@ void Display::showAircraftDetail(const Aircraft& aircraft) {
   callsign.trim();
 
   drawHeader(callsign);
-
+ 
   tft.setTextFont(2);
 
   int y = 40;

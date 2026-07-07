@@ -1,7 +1,7 @@
 #include "ADSBClient.h"
 #include "Config.h"
 #include "Filters.h"
-
+#include "GeoUtils.h"
 #include <WiFiClientSecure.h>
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
@@ -268,8 +268,24 @@ while (true) {
 }
   aircraft.trackDeg = aircraftDoc["track"] | -1;
 
-  aircraft.lat = aircraftDoc["lat"] | 0.0;
-  aircraft.lon = aircraftDoc["lon"] | 0.0;
+aircraft.lat = aircraftDoc["lat"] | 0.0;
+aircraft.lon = aircraftDoc["lon"] | 0.0;
+
+if (aircraft.lat != 0.0 && aircraft.lon != 0.0) {
+  aircraft.distanceNm = calculateDistanceNm(
+    settings.homeLat,
+    settings.homeLon,
+    aircraft.lat,
+    aircraft.lon
+  );
+
+  aircraft.bearingDeg = calculateBearingDeg(
+    settings.homeLat,
+    settings.homeLon,
+    aircraft.lat,
+    aircraft.lon
+  );
+}
 
   aircraft.seenSeconds = aircraftDoc["seen"] | -1.0;
   aircraft.seenPosSeconds = aircraftDoc["seen_pos"] | -1.0;

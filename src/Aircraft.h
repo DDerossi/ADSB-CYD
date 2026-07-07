@@ -16,6 +16,9 @@ struct Aircraft {
   double lat = 0.0;
   double lon = 0.0;
 
+  float distanceNm = -1;
+  int bearingDeg = -1;
+
   float seenSeconds = -1;
   float seenPosSeconds = -1;
 };
