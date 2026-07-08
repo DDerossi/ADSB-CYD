@@ -12,6 +12,7 @@ struct Aircraft {
   int altitudeFt = -1;
   int groundSpeedKt = -1;
   int trackDeg = -1;
+  int verticalRateFpm = 0;
 
   double lat = 0.0;
   double lon = 0.0;

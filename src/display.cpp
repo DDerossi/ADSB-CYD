@@ -99,8 +99,19 @@ void Display::drawAircraftRow(int row, const Aircraft& aircraft) {
 
   callsign.trim();
 
-  tft.setTextColor(COLOR_TEXT_PRIMARY, bg);
-  tft.drawString(callsign, 6, y);
+String trend = "=";
+
+if (aircraft.verticalRateFpm > 300) {
+  trend = "+";
+} else if (aircraft.verticalRateFpm < -300) {
+  trend = "-";
+}
+
+tft.setTextColor(COLOR_TEXT_PRIMARY, bg);
+tft.drawString(callsign, 6, y);
+
+tft.setTextColor(COLOR_TEXT_SECONDARY, bg);
+tft.drawString(trend, 88, y);
 
   tft.setTextColor(COLOR_ALTITUDE, bg);
   tft.drawRightString(String(aircraft.altitudeFt), 155, y, 2);

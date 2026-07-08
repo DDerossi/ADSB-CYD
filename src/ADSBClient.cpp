@@ -213,6 +213,7 @@ bool ADSBClient::fetchAircraft(const AppSettings& settings, AircraftStore& store
   filter["alt_geom"] = true;
   filter["gs"] = true;
   filter["track"] = true;
+  filter["baro_rate"] = true;
   filter["squawk"] = true;
   filter["lat"] = true;
   filter["lon"] = true;
@@ -267,6 +268,7 @@ while (true) {
   aircraft.groundSpeedKt = -1;
 }
   aircraft.trackDeg = aircraftDoc["track"] | -1;
+  aircraft.verticalRateFpm = aircraftDoc["baro_rate"] | 0;
 
 aircraft.lat = aircraftDoc["lat"] | 0.0;
 aircraft.lon = aircraftDoc["lon"] | 0.0;
