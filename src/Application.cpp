@@ -58,6 +58,9 @@ void Application::begin() {
       );
 
       if (fetchOk) {
+       
+        aircraftStore.sortByDistance();
+       
         Serial.print("Aircraft stored: ");
         Serial.println(aircraftStore.count());
 
@@ -153,7 +156,7 @@ void Application::refreshAircraft() {
   );
 
   if (fetchOk) {
-    Serial.print("Aircraft stored: ");
+    aircraftStore.sortByDistance();Serial.print("Aircraft stored: ");
     Serial.println(aircraftStore.count());
 
     showAircraftList();

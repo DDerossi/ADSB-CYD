@@ -13,6 +13,7 @@ public:
   AircraftList& list();
 
   int count() const;
+  void sortByDistance();
 
 private:
   AircraftList aircraftList;
