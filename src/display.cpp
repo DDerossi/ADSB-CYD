@@ -2,6 +2,7 @@
 #include "Config.h"
 #include "GeoUtils.h"
 #include "Theme.h"
+#include "AirlineLookup.h"
 
 void Display::begin() {
   pinMode(TFT_BL, OUTPUT);
@@ -130,6 +131,15 @@ void Display::showAircraftDetail(const Aircraft& aircraft) {
   tft.setTextFont(2);
 
   int y = 38;
+
+  String airlineName = lookupAirlineName(aircraft.flight);
+
+if (airlineName.length() > 0) {
+  tft.setTextColor(COLOR_TEXT_PRIMARY, COLOR_BACKGROUND);
+  tft.drawString(airlineName, 10, y);
+
+  y += 22;
+}
 
 
   tft.setTextColor(COLOR_LABEL, TFT_BLACK);
