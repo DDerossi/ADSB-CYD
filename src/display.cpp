@@ -3,6 +3,7 @@
 #include "GeoUtils.h"
 #include "Theme.h"
 #include "AirlineLookup.h"
+#include "AircraftTypeLookup.h"
 
 void Display::begin() {
   pinMode(TFT_BL, OUTPUT);
@@ -145,12 +146,19 @@ if (airlineName.length() > 0) {
   tft.setTextColor(COLOR_LABEL, TFT_BLACK);
   tft.drawString("Aircraft", 10, y);
 
-  tft.setTextColor(COLOR_TEXT_PRIMARY, TFT_BLACK);
+String aircraftTypeName = lookupAircraftTypeName(aircraft.type);
+
+tft.setTextColor(COLOR_TEXT_PRIMARY, COLOR_BACKGROUND);
+
+if (aircraftTypeName.length() > 0) {
+  tft.drawString(aircraftTypeName, 120, y);
+} else {
   tft.drawString(
     aircraft.type[0] ? aircraft.type : "Unknown",
     120,
     y
   );
+}
 
 
   y += 22;
