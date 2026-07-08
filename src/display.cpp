@@ -195,19 +195,6 @@ if (airlineName.length() > 0) {
   y += 22;
 
   tft.setTextColor(COLOR_LABEL, TFT_BLACK);
-  tft.drawString("Heading", 10, y);
-
-  tft.setTextColor(COLOR_TEXT_PRIMARY, TFT_BLACK);
-  tft.drawString(
-    String(aircraft.trackDeg) + "°",
-    120,
-    y
-  );
-
-
-  y += 22;
-
-  tft.setTextColor(COLOR_LABEL, TFT_BLACK);
   tft.drawString("Distance", 10, y);
 
   tft.setTextColor(COLOR_TEXT_PRIMARY, TFT_BLACK);
