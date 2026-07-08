@@ -56,3 +56,19 @@ int calculateBearingDeg(
 
   return normalized;
 }
+
+String bearingToCompass(int bearingDeg) {
+  if (bearingDeg < 0) {
+    return "--";
+  }
+
+  static const char* directions[] = {
+    "N", "NNE", "NE", "ENE",
+    "E", "ESE", "SE", "SSE",
+    "S", "SSW", "SW", "WSW",
+    "W", "WNW", "NW", "NNW"
+  };
+
+  int index = (int)round(bearingDeg / 22.5) % 16;
+  return String(directions[index]);
+}
