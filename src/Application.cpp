@@ -120,10 +120,13 @@ void Application::handleTouch() {
   lastTouchMs = millis();
 
 
-  // Detail screen tap = return to list
-  if (screen == ScreenState::AircraftDetail) {
-    showAircraftList();
-    return;
+  // Detail or settings screen tap = return to list
+  if (
+  screen == ScreenState::AircraftDetail ||
+  screen == ScreenState::Settings
+  ) {
+  showAircraftList();
+  return;
   }
 
 
@@ -131,8 +134,10 @@ void Application::handleTouch() {
   if (screen == ScreenState::AircraftList) {
 
     if (point.y < 30) {
-      return;
-    }
+  screen = ScreenState::Settings;
+  display.showSettingsScreen();
+  return;
+}
 
     int row = (point.y - 34) / 22;
 

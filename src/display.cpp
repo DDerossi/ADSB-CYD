@@ -266,3 +266,49 @@ if (aircraftTypeName.length() > 0) {
     220
   );
 }
+
+void Display::showSettingsScreen() {
+  tft.fillScreen(COLOR_BACKGROUND);
+
+  drawHeader("Settings");
+
+  tft.setTextFont(2);
+
+  int y = 44;
+
+  tft.setTextColor(COLOR_LABEL, COLOR_BACKGROUND);
+  tft.drawString("Min Alt", 10, y);
+  tft.setTextColor(COLOR_TEXT_PRIMARY, COLOR_BACKGROUND);
+  tft.drawString("500 ft", 140, y);
+
+  y += 26;
+
+  tft.setTextColor(COLOR_LABEL, COLOR_BACKGROUND);
+  tft.drawString("Max Alt", 10, y);
+  tft.setTextColor(COLOR_TEXT_PRIMARY, COLOR_BACKGROUND);
+  tft.drawString("60000 ft", 140, y);
+
+  y += 26;
+
+  tft.setTextColor(COLOR_LABEL, COLOR_BACKGROUND);
+  tft.drawString("Min Speed", 10, y);
+  tft.setTextColor(COLOR_TEXT_PRIMARY, COLOR_BACKGROUND);
+  tft.drawString("0 kt", 140, y);
+
+  y += 26;
+
+  tft.setTextColor(COLOR_LABEL, COLOR_BACKGROUND);
+  tft.drawString("Range", 10, y);
+  tft.setTextColor(COLOR_TEXT_PRIMARY, COLOR_BACKGROUND);
+  tft.drawString("20 NM", 140, y);
+
+  y += 26;
+
+  tft.setTextColor(COLOR_LABEL, COLOR_BACKGROUND);
+  tft.drawString("Refresh", 10, y);
+  tft.setTextColor(COLOR_TEXT_PRIMARY, COLOR_BACKGROUND);
+  tft.drawString("30 sec", 140, y);
+
+  tft.setTextColor(COLOR_TEXT_MUTED, COLOR_BACKGROUND);
+  tft.drawString("Tap anywhere to return", 10, 220);
+}
