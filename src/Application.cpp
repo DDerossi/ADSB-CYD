@@ -135,7 +135,7 @@ void Application::handleTouch() {
 
     if (point.y < 30) {
   screen = ScreenState::Settings;
-  display.showSettingsScreen();
+  display.showSettingsScreen(settings.get());
   return;
 }
 
