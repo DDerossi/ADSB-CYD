@@ -120,14 +120,17 @@ void Application::handleTouch() {
   lastTouchMs = millis();
 
 
-  // Detail or settings screen tap = return to list
-  if (
-  screen == ScreenState::AircraftDetail ||
-  screen == ScreenState::Settings
-  ) {
+  // Detail screen tap = return to list
+if (screen == ScreenState::AircraftDetail) {
   showAircraftList();
   return;
-  }
+}
+
+// Settings screen tap = handle settings interaction
+if (screen == ScreenState::Settings) {
+  handleSettingsTouch(point);
+  return;
+}
 
 
   // Aircraft list selection
@@ -194,4 +197,36 @@ void Application::showAircraftDetail(int index) {
   callsign.trim();
 
 display.showAircraftDetail(aircraft);
+}
+void Application::handleSettingsTouch(const TouchPoint& point) {
+  // Min Alt row: y 44–69
+  if (point.y >= 40 && point.y < 70) {
+    cycleMinAltitude();
+    display.showSettingsScreen(settings.get());
+    return;
+  }
+
+  // Anywhere else returns to list for now
+  showAircraftList();
+}
+
+void Application::cycleMinAltitude() {
+  int& minAlt = settings.get().minAltitudeFt;
+
+  if (minAlt == 0) {
+    minAlt = 500;
+  } else if (minAlt == 500) {
+    minAlt = 1000;
+  } else if (minAlt == 1000) {
+    minAlt = 2500;
+  } else if (minAlt == 2500) {
+    minAlt = 5000;
+  } else if (minAlt == 5000) {
+    minAlt = 10000;
+  } else {
+    minAlt = 0;
+  }
+
+  Serial.print("Min altitude changed to: ");
+  Serial.println(minAlt);
 }

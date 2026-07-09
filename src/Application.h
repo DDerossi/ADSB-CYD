@@ -45,4 +45,6 @@ void refreshAircraft();
 
 void showAircraftDetail(int index);
 void showAircraftList();
+void handleSettingsTouch(const TouchPoint& point);
+void cycleMinAltitude();
 };
